@@ -9,22 +9,18 @@ struct Projectile {
 
 impl Projectile {
     fn new(x: Kilometers, y: Kilometers, z: Kilometers) -> Projectile {
-        Projectile {
-            x,
-            y,
-            z,
-        }
+        Projectile {x, y, z}
     }
 }
 
 fn main() {
     // simulation state variables
-    let mut finished = false;
     let mut projectile_a = Projectile::new(1.0, 1.0, 1.0);
 
     loop {
+        // Exit Conditions
         if projectile_a.y > 10.0 {
-            finished = true;
+            break;
         }
 
         projectile_a = calc_projectile_position(projectile_a);
@@ -32,10 +28,6 @@ fn main() {
         println!("{:?}", projectile_a);
 
         thread::sleep(time::Duration::from_secs(1));
-
-        if finished {
-            break;
-        }
     }
 }
 
