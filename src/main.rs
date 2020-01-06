@@ -1,21 +1,35 @@
 use std::{thread, time};
 
+#[derive(Debug)]
+struct Projectile {
+    x: Kilometers,
+    y: Kilometers,
+    z: Kilometers,
+}
+
+impl Projectile {
+    fn new(x: Kilometers, y: Kilometers, z: Kilometers) -> Projectile {
+        Projectile {
+            x,
+            y,
+            z,
+        }
+    }
+}
+
 fn main() {
     // simulation state variables
     let mut finished = false;
-    let mut projectile_x: f64 = 0.0;
-    let mut projectile_y: f64 = 0.0;
+    let mut projectile_a = Projectile::new(1.0, 1.0, 1.0);
 
     loop {
-        if projectile_y > 10.0 {
+        if projectile_a.y > 10.0 {
             finished = true;
         }
 
-        let (new_x, new_y) = calc_projectile_position(projectile_x, projectile_y);
-        projectile_x = new_x;
-        projectile_y = new_y;
+        projectile_a = calc_projectile_position(projectile_a);
 
-        println!("{}, {}", projectile_x, projectile_y);
+        println!("{:?}", projectile_a);
 
         thread::sleep(time::Duration::from_secs(1));
 
@@ -25,8 +39,11 @@ fn main() {
     }
 }
 
-fn calc_projectile_position(x: f64, y: f64) -> (f64, f64) {
-    (x + 1.0, y + 2.0)
+fn calc_projectile_position(p: Projectile) -> Projectile {
+    let x = p.x + 1.0;
+    let y = p.x + 2.0;
+    let z = p.x + 1.0;
+    Projectile::new(x,y,z)
 }
 
 type Kilometers = f64;
