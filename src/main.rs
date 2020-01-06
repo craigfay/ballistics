@@ -1,6 +1,32 @@
+use std::{thread, time};
+
 fn main() {
-    let result = gravitational_force(40.0);
-    println!("{}", result);
+    // simulation state variables
+    let mut finished = false;
+    let mut projectile_x: f64 = 0.0;
+    let mut projectile_y: f64 = 0.0;
+
+    loop {
+        if projectile_y > 10.0 {
+            finished = true;
+        }
+
+        let (new_x, new_y) = calc_projectile_position(projectile_x, projectile_y);
+        projectile_x = new_x;
+        projectile_y = new_y;
+
+        println!("{}, {}", projectile_x, projectile_y);
+
+        thread::sleep(time::Duration::from_secs(1));
+
+        if finished {
+            break;
+        }
+    }
+}
+
+fn calc_projectile_position(x: f64, y: f64) -> (f64, f64) {
+    (x + 1.0, y + 2.0)
 }
 
 type Kilometers = f64;
