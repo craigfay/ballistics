@@ -1,5 +1,8 @@
 use std::{thread, time};
 
+type Kilometers = f64;
+type MetersPerSecSquared = f64;
+
 #[derive(Debug)]
 struct Projectile {
     x: Kilometers,
@@ -27,19 +30,18 @@ fn main() {
 
         println!("{:?}", projectile_a);
 
+        // Enforce 1 Second "frame rate"
         thread::sleep(time::Duration::from_secs(1));
     }
 }
 
+// Arbitrarily change Projectile parameters (for now)
 fn calc_projectile_position(p: Projectile) -> Projectile {
     let x = p.x + 1.0;
     let y = p.x + 2.0;
     let z = p.x + 1.0;
     Projectile::new(x,y,z)
 }
-
-type Kilometers = f64;
-type MetersPerSecSquared = f64;
 
 // The gravitational force is propoportional to 1/R^2, where R is the distance
 // to the center of the Earth.
