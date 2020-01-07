@@ -66,6 +66,7 @@ fn main() {
     }
 }
 
+// Given a projectile and its time in flight, calculate its position
 fn projectile_position(p: &Projectile, seconds: f64) -> Point {
     let total_distance: Meters = x_y_distance(&p.origin, &p.destination);
     let distance_traveled: Meters = p.speed * seconds;
@@ -77,6 +78,7 @@ fn projectile_position(p: &Projectile, seconds: f64) -> Point {
     Point::new(x, y, z)
 }
 
+// Calculate the distance between two points, excluding the z-axis
 fn x_y_distance(p1: &Point, p2: &Point) -> Meters {
     ((p2.x - p1.x).powf(2.0) + (p2.y - p1.y).powf(2.0)).sqrt()
 }
