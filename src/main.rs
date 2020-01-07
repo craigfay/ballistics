@@ -1,5 +1,6 @@
 use std::{thread, time};
 
+type Seconds = f64;
 type Kilometers = f64;
 type MetersPerSecSquared = f64;
 
@@ -48,7 +49,7 @@ fn main() {
             break;
         }
 
-        current_position = projectile_position(&projectile, seconds);
+        current_position = projectile_position(&projectile, seconds as f64);
 
         println!("{:?}", current_position);
 
@@ -57,11 +58,11 @@ fn main() {
     }
 }
 
-fn projectile_position(p: &Projectile, seconds: u32) -> Point {
-    let flight_duration = 20.0;
-    let x = (p.destination.x - p.origin.x) / flight_duration * seconds as f64;
-    let y = (p.destination.y - p.origin.y) / flight_duration * seconds as f64;
-    let z = (p.destination.z - p.origin.z) / flight_duration * seconds as f64;
+fn projectile_position(p: &Projectile, seconds: f64) -> Point {
+    let flight_duration: Seconds = 20.0;
+    let x = (p.destination.x - p.origin.x) / flight_duration * seconds;
+    let y = (p.destination.y - p.origin.y) / flight_duration * seconds;
+    let z = (p.destination.z - p.origin.z) / flight_duration * seconds;
     Point::new(x, y, z)
 }
 
