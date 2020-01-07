@@ -5,42 +5,64 @@ type MetersPerSecSquared = f64;
 
 #[derive(Debug)]
 struct Projectile {
+    origin: Point,
+    destination: Point,
+}
+
+impl Projectile {
+    fn new(origin: Point, destination: Point) -> Projectile {
+        Projectile {
+            origin,
+            destination,
+        }
+    }
+}
+
+#[derive(Debug)]
+#[derive(Clone)]
+struct Point {
     x: Kilometers,
     y: Kilometers,
     z: Kilometers,
 }
 
-impl Projectile {
-    fn new(x: Kilometers, y: Kilometers, z: Kilometers) -> Projectile {
-        Projectile {x, y, z}
+impl Point {
+    fn new(x: Kilometers, y: Kilometers, z: Kilometers) -> Point {
+        Point {x, y, z}
     }
 }
 
 fn main() {
     // simulation state variables
-    let mut projectile_a = Projectile::new(1.0, 1.0, 1.0);
+    let projectile = Projectile::new(
+        Point::new(1.0, 1.0, 0.0),
+        Point::new(10.0, 10.0, 0.0),
+    );
 
-    loop {
-        // Exit Conditions
-        if projectile_a.y > 10.0 {
+    let mut current_position = projectile.origin.clone();
+
+    for seconds in 1.. {
+
+        // Exit conditions
+        if current_position.y > 5.0 {
             break;
         }
 
-        projectile_a = calc_projectile_position(projectile_a);
+        current_position = projectile_position(&projectile, seconds);
 
-        println!("{:?}", projectile_a);
+        println!("{:?}", current_position);
 
         // Enforce 1 Second "frame rate"
         thread::sleep(time::Duration::from_secs(1));
     }
 }
 
-// Arbitrarily change Projectile parameters (for now)
-fn calc_projectile_position(p: Projectile) -> Projectile {
-    let x = p.x + 1.0;
-    let y = p.x + 2.0;
-    let z = p.x + 1.0;
-    Projectile::new(x,y,z)
+fn projectile_position(p: &Projectile, seconds: u32) -> Point {
+    let flight_duration = 20.0;
+    let x = (p.destination.x - p.origin.x) / flight_duration * seconds as f64;
+    let y = (p.destination.y - p.origin.y) / flight_duration * seconds as f64;
+    let z = (p.destination.z - p.origin.z) / flight_duration * seconds as f64;
+    Point::new(x, y, z)
 }
 
 // The gravitational force is propoportional to 1/R^2, where R is the distance
