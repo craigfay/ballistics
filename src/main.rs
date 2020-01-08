@@ -53,7 +53,7 @@ fn main() {
     for seconds in 1.. {
 
         // Exit conditions
-        if current_position.y > 5.0 {
+        if current_position.z < 0.0 && seconds > 1 {
             break;
         }
 
@@ -72,11 +72,14 @@ fn projectile_position(p: &Projectile, seconds: f64) -> Point {
     let distance_traveled: Meters = p.speed * seconds;
     let flight_duration: Seconds = total_distance / p.speed;
 
+    let z = - (seconds.powf(2.0)) + (flight_duration * seconds);
+
     let x = (p.destination.x - p.origin.x) / flight_duration * seconds;
     let y = (p.destination.y - p.origin.y) / flight_duration * seconds;
-    let z = (p.destination.z - p.origin.z) / flight_duration * seconds;
+    // let z = (p.destination.z - p.origin.z) / flight_duration * seconds;
     Point::new(x, y, z)
 }
+
 
 // Calculate the distance between two points, excluding the z-axis
 fn x_y_distance(p1: &Point, p2: &Point) -> Meters {
