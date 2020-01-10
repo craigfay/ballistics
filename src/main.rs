@@ -1,11 +1,15 @@
 use std::{thread, time};
+use std::fs;
+use ron::de::from_str;
+use serde::Deserialize;
+use std::collections::HashMap;
 
 type Seconds = f64;
 type Meters = f64;
 type MetersPerSec = f64;
 type MetersPerSecSquared = f64;
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize)]
 struct Projectile {
     origin: Point,
     destination: Point,
@@ -26,8 +30,7 @@ impl Projectile {
     }
 }
 
-#[derive(Debug)]
-#[derive(Clone)]
+#[derive(Debug, Clone, Deserialize)]
 struct Point {
     x: Meters,
     y: Meters,
@@ -40,11 +43,30 @@ impl Point {
     }
 }
 
+#[derive(Debug, Clone, Deserialize)]
+struct Config {
+    points: HashMap<String, Point>,
+}
+
+
 fn main() {
+
+    let config_file = "config.ron";
+    let config_str = fs::read_to_string(config_file)
+        .expect("Could not read config file");
+
+    let config: Config = match from_str(&config_str) {
+        Ok(x) => x,
+        Err(e) => {
+            println!("{}", e);
+            std::process::exit(1);
+        }
+    };
+
     // simulation state variables
     let projectile = Projectile::new(
-        Point::new(1.0, 1.0, 0.0),
-        Point::new(10.0, 10.0, 0.0),
+        config.points["origin"].clone(),
+        config.points["destination"].clone(),
         1.0,
     );
 
