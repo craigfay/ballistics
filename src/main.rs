@@ -50,18 +50,12 @@ struct Config {
 
 
 fn main() {
-
+    // Read config
     let config_file = "config.ron";
     let config_str = fs::read_to_string(config_file)
         .expect("Could not read config file");
-
-    let config: Config = match from_str(&config_str) {
-        Ok(x) => x,
-        Err(e) => {
-            println!("{}", e);
-            std::process::exit(1);
-        }
-    };
+    let config: Config = from_str(&config_str)
+        .expect("Could not deserialize config");
 
     // simulation state variables
     let projectile = Projectile::new(
