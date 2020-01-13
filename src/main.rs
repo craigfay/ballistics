@@ -9,7 +9,7 @@ type Meters = f64;
 type MetersPerSec = f64;
 type MetersPerSecSquared = f64;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 struct Projectile {
     origin: Point,
     destination: Point,
@@ -45,7 +45,7 @@ impl Point {
 
 #[derive(Debug, Clone, Deserialize)]
 struct Config {
-    points: HashMap<String, Point>,
+    projectile: Projectile,
 }
 
 
@@ -58,11 +58,7 @@ fn main() {
         .expect("Could not deserialize config");
 
     // simulation state variables
-    let projectile = Projectile::new(
-        config.points["origin"].clone(),
-        config.points["destination"].clone(),
-        1.0,
-    );
+    let projectile = &config.projectile;
 
     let mut current_position = projectile.origin.clone();
 
