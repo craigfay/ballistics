@@ -1,4 +1,8 @@
 (
+  map: CoordinatePlane (
+    x_size: 100,
+    y_size: 100,
+  ),
   projectile: Projectile (
     origin: (
       x: 1.0,
@@ -11,5 +15,5 @@
       z: 0.0,
     ),
     speed: 1.0
-  )
+  ),
 )
